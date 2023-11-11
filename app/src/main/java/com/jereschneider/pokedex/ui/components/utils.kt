@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
+import com.jereschneider.pokedex.domain.models.PokemonModel
 
 fun Modifier.shimmerEffect(
     isShow: Boolean = true,
@@ -46,5 +47,15 @@ fun Modifier.shimmerEffect(
     }
     else{
         background(color = Color.Transparent)
+    }
+}
+
+fun PokemonModel.getBackgroundColor() : Color {
+    return when {
+        this.types.contains("grass") || this.types.contains("poison") -> Color(71,209,177)
+        this.types.contains("fire") || this.types.contains("flying") -> Color(251,108,108)
+        this.types.contains("water") -> Color(118,191,254)
+        this.types.contains("electric") -> Color(255,216,111)
+        else -> Color.White
     }
 }

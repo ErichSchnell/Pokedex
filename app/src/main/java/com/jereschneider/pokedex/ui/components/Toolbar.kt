@@ -21,7 +21,9 @@ fun Toolbar(
     onBackClick: () -> Unit,
     onSubscribe: (() -> Unit)? = null
 ){
-    Row {
+    Row(
+        modifier = Modifier.padding(top = 24.dp)
+    ) {
         IconButton(
             modifier = Modifier.padding(horizontal = 12.dp),
             onClick = { onBackClick() }
@@ -35,7 +37,7 @@ fun Toolbar(
         Spacer(modifier = Modifier.weight(1f))
         onSubscribe?.let { onClick ->
             IconButton(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(horizontal = 12.dp),
                 onClick = { onClick() }
             ) {
                 Icon(

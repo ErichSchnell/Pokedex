@@ -1,4 +1,4 @@
-package com.jereschneider.pokedex.ui.screens.home
+package com.jereschneider.pokedex.ui.screens.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeContentError(message: String){
+fun ErrorView(message: String){
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -32,4 +32,4 @@ fun HomeContentError(message: String){
 
 @Preview
 @Composable
-private fun HomeComponentErrorPreview() = HomeContentError("Error al cargar los pokemones")
+private fun ErrorViewPreview() = ErrorView("Error al cargar los pokemones")
