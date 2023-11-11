@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="toolbar_start_icon_description">Volver a la lista de pokemones</string>
+    <string name="toolbar_end_icon_description">Guardar pokemon como favorito</string>
 </resources>
