@@ -8,10 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.jereschneider.pokedex.domain.models.About
-import com.jereschneider.pokedex.domain.models.DetailState
+import com.jereschneider.pokedex.domain.models.HomeState
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
-import com.jereschneider.pokedex.ui.screens.details.DetailScreen
+import com.jereschneider.pokedex.ui.screens.home.HomeScreen
 import com.jereschneider.pokedex.ui.theme.PokedexTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,12 +45,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    HomeScreen(HomeState.Success(pokemons))
-                    DetailScreen(
-                        state = DetailState.Success(detailPokemon),
-                        onBackClick = {},
-                        onSubscribe = {}
-                    )
+                    HomeScreen(HomeState.Success(pokemons))
+//                    DetailScreen(
+//                        state = DetailState.Success(detailPokemon),
+//                        onBackClick = {},
+//                        onSubscribe = {}
+//                    )
                 }
             }
         }

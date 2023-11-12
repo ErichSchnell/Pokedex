@@ -1,6 +1,9 @@
 package com.jereschneider.pokedex.ui.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,16 +24,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jereschneider.pokedex.R
 import com.jereschneider.pokedex.domain.models.PokemonModel
 
 @Composable
 fun ItemPokedex(modifier: Modifier = Modifier, pokemonModel: PokemonModel){
-    val showShimmer = remember { mutableStateOf(true) }
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -41,14 +48,16 @@ fun ItemPokedex(modifier: Modifier = Modifier, pokemonModel: PokemonModel){
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1.2f),
+                    .weight(1.2f)
+                    .background(color = pokemonModel.getBackgroundColor()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = pokemonModel.name,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = Color.White
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 LazyColumn{
@@ -58,17 +67,41 @@ fun ItemPokedex(modifier: Modifier = Modifier, pokemonModel: PokemonModel){
                     }
                 }
             }
-            AsyncImage(
-                modifier = Modifier
-                    .shimmerEffect(showShimmer.value)
-                    .padding(top = 24.dp)
-                    .fillMaxSize()
-                    .weight(1f),
-                model = pokemonModel.urlImg,
-                onSuccess = { showShimmer.value = false },
-                contentDescription = null
+            CustomImage(
+                modifier = Modifier.weight(1f),
+                pokemonModel = pokemonModel
             )
         }
+    }
+}
+
+@Composable
+private fun DecorateImage(){
+    Image(
+        modifier = Modifier.height(120.dp).scale(1.5f),
+        painter = painterResource(id = R.drawable.pokeball_icon),
+        alpha = 0.2f,
+        alignment = Alignment.BottomStart,
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun CustomImage(modifier: Modifier, pokemonModel: PokemonModel){
+    val showShimmer = remember { mutableStateOf(true) }
+    Box(modifier.background(color = pokemonModel.getBackgroundColor())){
+        DecorateImage()
+        AsyncImage(
+            modifier = Modifier
+                .shimmerEffect(showShimmer.value)
+                .background(color = Color.Transparent)
+                .padding(top = 24.dp)
+                .fillMaxSize(),
+            model = pokemonModel.urlImg,
+            onSuccess = { showShimmer.value = false },
+            contentDescription = null
+        )
     }
 }
 
