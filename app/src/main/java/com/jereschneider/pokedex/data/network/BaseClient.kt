@@ -22,34 +22,37 @@ class BaseClient constructor(engine: HttpClientEngine) {
         internal const val BASE_URL = "https://pokeapi.co/api/v2"
     }
 
-    internal val apiClient: HttpClient = HttpClient(engine) {
+    private val apiClient: HttpClient = HttpClient(engine) {
         Json { ignoreUnknownKeys = true }
         install(ContentNegotiation) {
             json()
         }
     }
-}
 
-private data class HttpStatus(val httpResponse: HttpResponse? = null, val errorMessage: String = "")
-
-private suspend fun BaseClient.get(url: String, errorMessage: String): HttpStatus {
-    return try {
-        val response = apiClient.get(url)
-        if (response.status.value in 200..299)
-            HttpStatus(httpResponse = response)
-        else
-            HttpStatus(errorMessage = errorMessage)
-    } catch (e: ConnectException) {
-        Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
-        HttpStatus(errorMessage = "Por favor, verifica tu conexión")
-    } catch (e: UnknownHostException) {
-        Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
-        HttpStatus(errorMessage = "Por favor, verifica tu conexión")
-    } catch (e: Exception) {
-        Log.e("fetchPokemonPage: ", "ERROR DESCONOCIDO: $e")
-        HttpStatus(errorMessage = "Ups! Atrapaste un error desconocido, vuelve a intentarlo")
+    internal suspend fun get(url: String, errorMessage: String): HttpStatus {
+        return try {
+            val response = apiClient.get(url)
+            if (response.status.value in 200..299)
+                HttpStatus(httpResponse = response)
+            else
+                HttpStatus(errorMessage = errorMessage)
+        } catch (e: ConnectException) {
+            Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
+            HttpStatus(errorMessage = "Por favor, verifica tu conexión")
+        } catch (e: UnknownHostException) {
+            Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
+            HttpStatus(errorMessage = "Por favor, verifica tu conexión")
+        } catch (e: Exception) {
+            Log.e("fetchPokemonPage: ", "ERROR DESCONOCIDO: $e")
+            HttpStatus(errorMessage = "Ups! Atrapaste un error desconocido, vuelve a intentarlo")
+        }
     }
 }
+
+internal data class HttpStatus(
+    val httpResponse: HttpResponse? = null,
+    val errorMessage: String = ""
+)
 
 internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null): StatusResult<PokePageDto> {
     val page = if (navigateToPage.isNullOrEmpty()) "$BASE_URL/pokemon" else navigateToPage
