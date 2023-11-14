@@ -1,5 +1,6 @@
 package com.jereschneider.pokedex
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,50 +8,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.jereschneider.pokedex.domain.models.About
-import com.jereschneider.pokedex.domain.models.HomeState
-import com.jereschneider.pokedex.domain.models.PokemonDetailModel
-import com.jereschneider.pokedex.domain.models.PokemonModel
+import com.jereschneider.pokedex.data.datasources.PokemonDetailRemoteDataSource
+import com.jereschneider.pokedex.data.datasources.PokemonListDataSource
+import com.jereschneider.pokedex.data.network.BaseClient
+import com.jereschneider.pokedex.data.repository.PokemonDetailRepository
+import com.jereschneider.pokedex.data.repository.PokemonRawListRepository
+import com.jereschneider.pokedex.domain.usecases.GetPokemonListUseCase
 import com.jereschneider.pokedex.ui.screens.home.HomeScreen
+import com.jereschneider.pokedex.ui.screens.home.HomeViewModel
 import com.jereschneider.pokedex.ui.theme.PokedexTheme
+import io.ktor.client.engine.okhttp.OkHttp
 
 class MainActivity : ComponentActivity() {
-    val pokemons = listOf(
-        PokemonModel(0, "Bulbasaur", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png", listOf("grass", "poison")),
-        PokemonModel(1, "Ivysaur", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png", listOf("grass", "poison")),
-        PokemonModel(2, "Ventasaur", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png", listOf("grass", "poison"))
-    )
-    val pokemonModel = PokemonModel(
-        id = 0,
-        name = "bulbasaur",
-        types = listOf("grass","poison"),
-        urlImg = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-    )
-    val about = About(
-        species = "Seed",
-        height = "2`3.6\" (0.70 cm)",
-        weight = "11.2 lbs (6.9 kg)",
-        abilities = "Overgrow, Chlorophyl",
-        gender = "???",
-        eggGroup = "Monster",
-        eggCycle = "Grass"
-    )
-    val detailPokemon = PokemonDetailModel(pokemonModel, about)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel = HomeViewModel(
+            GetPokemonListUseCase(
+                pokemonRawListRepository = PokemonRawListRepository(
+                    PokemonListDataSource(BaseClient(OkHttp.create()))),
+                pokemonDetailRepository = PokemonDetailRepository(
+                    PokemonDetailRemoteDataSource(BaseClient(OkHttp.create()))
+                )
+            )
+        )
         setContent {
             PokedexTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(HomeState.Success(pokemons))
-//                    DetailScreen(
-//                        state = DetailState.Success(detailPokemon),
-//                        onBackClick = {},
-//                        onSubscribe = {}
-//                    )
+                    HomeScreen(viewModel.state.value){
+                    }
                 }
             }
         }

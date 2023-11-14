@@ -52,10 +52,12 @@ fun Modifier.shimmerEffect(
 
 fun PokemonModel.getBackgroundColor() : Color {
     return when {
-        this.types.contains("grass") || this.types.contains("poison") -> Color(71,209,177)
-        this.types.contains("fire") || this.types.contains("flying") -> Color(251,108,108)
-        this.types.contains("water") -> Color(118,191,254)
-        this.types.contains("electric") -> Color(255,216,111)
-        else -> Color.White
+        this.types.first().contains("grass") || this.types.first().contains("poison") -> Color(71,209,177)
+        this.types.first().contains("fire") || this.types.first().contains("flying") -> Color(251,108,108)
+        this.types.first().contains("water") -> Color(118,191,254)
+        this.types.first().contains("electric") -> Color(255,216,111)
+        this.types.first().contains("bug") -> Color(191, 142, 75, 255)
+        this.types.contains("flying") -> Color(144, 186, 201, 255)
+        else ->  Color(160, 160, 160, 255)
     }
 }

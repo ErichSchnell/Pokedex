@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("kotlinx-serialization")
 }
 
 android {
@@ -41,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packaging {
         resources {
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.bundles.compose.ui)
     implementation(platform(libs.compose.bom))
     implementation(libs.material3)
+    implementation(libs.bundles.ktor)
 
     testImplementation(libs.junit)
 

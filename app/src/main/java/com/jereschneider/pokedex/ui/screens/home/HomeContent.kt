@@ -20,7 +20,10 @@ import com.jereschneider.pokedex.ui.components.ItemPokedex
 
 
 @Composable
-fun HomeContent(pokemons: List<PokemonModel>){
+fun HomeContent(
+    pokemons: List<PokemonModel>,
+    goToDetail: () -> Unit
+    ){
     Column {
         Text(
             modifier = Modifier
@@ -42,7 +45,7 @@ fun HomeContent(pokemons: List<PokemonModel>){
                 count = pokemons.size,
                 key = { pokemons[it].id }
             ) { index ->
-                ItemPokedex(pokemonModel = pokemons[index])
+                ItemPokedex(pokemonModel = pokemons[index]){ goToDetail() }
             }
         }
     }
@@ -56,5 +59,5 @@ private fun HomeContentPreview(){
         PokemonModel(1, "Ivysaur", "", listOf("grass", "poison")),
         PokemonModel(2, "Ventasaur", "", listOf("grass", "poison"))
     )
-    HomeContent(pokemons = pokemons)
+    HomeContent(pokemons = pokemons){}
 }

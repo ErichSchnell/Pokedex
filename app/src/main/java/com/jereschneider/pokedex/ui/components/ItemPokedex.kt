@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -36,13 +37,19 @@ import coil.compose.AsyncImage
 import com.jereschneider.pokedex.R
 import com.jereschneider.pokedex.domain.models.PokemonModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemPokedex(modifier: Modifier = Modifier, pokemonModel: PokemonModel){
+fun ItemPokedex(
+    modifier: Modifier = Modifier,
+    pokemonModel: PokemonModel,
+    goToDetail: () -> Unit
+    ){
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
-            .clip(RoundedCornerShape(14))
+            .clip(RoundedCornerShape(14)),
+        onClick = { goToDetail() }
     ) {
         Row(Modifier.fillMaxSize()) {
             Column(
@@ -78,7 +85,9 @@ fun ItemPokedex(modifier: Modifier = Modifier, pokemonModel: PokemonModel){
 @Composable
 private fun DecorateImage(){
     Image(
-        modifier = Modifier.height(120.dp).scale(1.5f),
+        modifier = Modifier
+            .height(120.dp)
+            .scale(1.5f),
         painter = painterResource(id = R.drawable.pokeball_icon),
         alpha = 0.2f,
         alignment = Alignment.BottomStart,
@@ -114,5 +123,5 @@ private fun ItemPokedexPreview() {
         types = listOf("grass","poison"),
         urlImg = ""
     )
-    ItemPokedex(pokemonModel = pokemonModel)
+    ItemPokedex(pokemonModel = pokemonModel){}
 }
