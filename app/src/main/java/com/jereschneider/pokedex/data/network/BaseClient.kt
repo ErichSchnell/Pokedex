@@ -10,8 +10,11 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 
 class BaseClient constructor(engine: HttpClientEngine) {
@@ -27,33 +30,42 @@ class BaseClient constructor(engine: HttpClientEngine) {
     }
 }
 
-internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null)
-        : StatusResult<PokePageDto> {
-    val page = if (navigateToPage.isNullOrEmpty()) "$BASE_URL/pokemon" else navigateToPage
+private data class HttpStatus(val httpResponse: HttpResponse? = null, val errorMessage: String = "")
 
-    val response = apiClient.get(page)
-
+private suspend fun BaseClient.get(url: String, errorMessage: String): HttpStatus {
     return try {
+        val response = apiClient.get(url)
         if (response.status.value in 200..299)
-            StatusResult.Success(value = response.body())
+            HttpStatus(httpResponse = response)
         else
-            StatusResult.Error("No se pudo obtener el listado de pokemones debido a ${response.status.description}")
+            HttpStatus(errorMessage = errorMessage)
+    } catch (e: ConnectException) {
+        Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
+        HttpStatus(errorMessage = "Por favor, verifica tu conexión")
+    } catch (e: UnknownHostException) {
+        Log.e("fetchPokemonPage: ", "ERROR DE CONEXION: $e")
+        HttpStatus(errorMessage = "Por favor, verifica tu conexión")
     } catch (e: Exception) {
         Log.e("fetchPokemonPage: ", "ERROR DESCONOCIDO: $e")
-        StatusResult.Error("No se pudo obtener el listado de pokemones debido a un error desconocido")
+        HttpStatus(errorMessage = "Ups! Atrapaste un error desconocido, vuelve a intentarlo")
     }
 }
 
-internal suspend fun BaseClient.fetchPokemonDetail(endpoint: String) : StatusResult<PokemonDetailDto> {
-    val response = apiClient.get(endpoint)
+internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null): StatusResult<PokePageDto> {
+    val page = if (navigateToPage.isNullOrEmpty()) "$BASE_URL/pokemon" else navigateToPage
+    val errorMessage = "No se pudo obtener el listado de pokemones"
+    val httpStatus = get(page, errorMessage)
 
-    return try {
-        if (response.status.value in 200..299)
-            StatusResult.Success(value = response.body())
-        else
-            StatusResult.Error("No se pudo cargar el pokemon porque ${response.status.description}")
-    } catch (e: Exception) {
-        Log.e("fetchPokemonDetail: ", "ERROR DESCONOCIDO: $e")
-        StatusResult.Error("No se pudo obtener el pokemon debido a un error desconocido")
-    }
+    httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
+
+    return StatusResult.Error(httpStatus.errorMessage)
+}
+
+internal suspend fun BaseClient.fetchPokemonDetail(endpoint: String): StatusResult<PokemonDetailDto> {
+    val errorMessage = "No se pudo cargar el pokemon"
+    val httpStatus = get(endpoint, errorMessage)
+
+    httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
+
+    return StatusResult.Error(httpStatus.errorMessage)
 }
