@@ -59,6 +59,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.material3)
     implementation(libs.bundles.ktor)
+    implementation(libs.androidx.navigation.runtime.ktx)
 
     testImplementation(libs.junit)
 
