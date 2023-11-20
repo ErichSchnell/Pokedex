@@ -12,7 +12,7 @@ coil-compose = "2.5.0"
 ktor-version = "2.3.6"
 org-jetbrains-kotlin-plugin-serialization = "1.9.20"
 androidx-navigation = "2.7.5"
-compose-navigation = "2.7.5"
+compose-navigation = "2.5.3"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -33,7 +33,6 @@ material3 = { group = "androidx.compose.material3", name = "material3" }
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-version" }
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor-version"  }
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor-version" }
-ktor-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor-version" }
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor-version" }
 
 coil-compose = {group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose"}
@@ -72,6 +71,5 @@ ktor = [
     "ktor-core",
     "ktor-okhttp",
     "ktor-content-negotiation",
-    "ktor-auth",
-    "ktor-serialization"
+    "ktor-serialization",
 ]

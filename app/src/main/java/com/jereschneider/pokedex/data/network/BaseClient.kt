@@ -19,19 +19,22 @@ import java.net.UnknownHostException
 
 class BaseClient constructor(engine: HttpClientEngine) {
     companion object {
-        internal const val BASE_URL = "https://pokeapi.co/api/v2"
+        internal const val BASE_URL = "https://pokeapi.co/api/v2/pokemon"
     }
 
     private val apiClient: HttpClient = HttpClient(engine) {
         Json { ignoreUnknownKeys = true }
         install(ContentNegotiation) {
-            json()
+            json(
+                json = Json { ignoreUnknownKeys = true }
+            )
         }
     }
 
     internal suspend fun get(url: String, errorMessage: String): HttpStatus {
         return try {
             val response = apiClient.get(url)
+            Log.e("get: ", "RESPONSE: $response")
             if (response.status.value in 200..299)
                 HttpStatus(httpResponse = response)
             else
@@ -55,7 +58,7 @@ internal data class HttpStatus(
 )
 
 internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null): StatusResult<PokePageDto> {
-    val page = if (navigateToPage.isNullOrEmpty()) "$BASE_URL/pokemon" else navigateToPage
+    val page = if (navigateToPage.isNullOrEmpty()) BASE_URL else navigateToPage
     val errorMessage = "No se pudo obtener el listado de pokemones"
     val httpStatus = get(page, errorMessage)
 
@@ -64,9 +67,9 @@ internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null)
     return StatusResult.Error(httpStatus.errorMessage)
 }
 
-internal suspend fun BaseClient.fetchPokemonDetail(endpoint: String): StatusResult<PokemonDetailDto> {
+internal suspend fun BaseClient.fetchPokemonDetail(pokemonName: String): StatusResult<PokemonDetailDto> {
     val errorMessage = "No se pudo cargar el pokemon"
-    val httpStatus = get(endpoint, errorMessage)
+    val httpStatus = get("$BASE_URL/$pokemonName", errorMessage)
 
     httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
 

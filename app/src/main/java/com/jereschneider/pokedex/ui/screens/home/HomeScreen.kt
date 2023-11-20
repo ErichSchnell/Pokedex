@@ -6,12 +6,12 @@ import com.jereschneider.pokedex.ui.screens.common.ErrorView
 
 @Composable
 fun HomeScreen(
-    homeState: HomeState,
-    goToDetail: () -> Unit
-){
-    when(homeState){
+    homeViewModel: HomeViewModel,
+    goToDetail: (String) -> Unit
+) {
+    when (val homeState = homeViewModel.state.value) {
         HomeState.Loading -> HomeContentLoading()
-        is HomeState.Success -> HomeContent(pokemons = homeState.pokemons){ goToDetail() }
+        is HomeState.Success -> HomeContent(pokemons = homeState.pokemons) { goToDetail(it) }
         is HomeState.Error -> ErrorView(message = homeState.message)
     }
 }

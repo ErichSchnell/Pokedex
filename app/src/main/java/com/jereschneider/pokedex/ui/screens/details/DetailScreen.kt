@@ -6,11 +6,13 @@ import com.jereschneider.pokedex.ui.screens.common.ErrorView
 
 @Composable
 fun DetailScreen(
-    state: DetailState,
+    viewModel: DetailViewModel,
+    pokemonName: String,
     onBackClick: () -> Unit,
     onSubscribe: () -> Unit
 ) {
-    when(state){
+    viewModel.getPokemonDetail(pokemonName)
+    when(val state = viewModel.state.value){
         DetailState.Loading -> DetailContentLoading()
         is DetailState.Success -> DetailContent(
             detailPokemon = state.detailPokemon,

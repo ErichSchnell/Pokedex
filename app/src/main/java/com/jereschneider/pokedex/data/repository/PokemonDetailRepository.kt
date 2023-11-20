@@ -2,7 +2,7 @@ package com.jereschneider.pokedex.data.repository
 
 import com.jereschneider.pokedex.data.interfaces.PokemonDetailRemoteDataSourceInterface
 import com.jereschneider.pokedex.domain.interfaces.PokemonDetailRepositoryInterface
-import com.jereschneider.pokedex.domain.models.PokemonModel
+import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.StatusResult
 
 class PokemonDetailRepository(
@@ -10,7 +10,7 @@ class PokemonDetailRepository(
 ) : PokemonDetailRepositoryInterface {
     private val cacheDetails = mutableListOf<CacheDetails>()
 
-    override suspend fun fetchPokemonDetail(endpoint: String): StatusResult<PokemonModel> {
+    override suspend fun fetchPokemonDetail(endpoint: String): StatusResult<PokemonDetailModel> {
         val pokemonModel = cacheDetails.filter { it.endpoint == endpoint }
 
         if (pokemonModel.isNotEmpty()) return StatusResult.Success(pokemonModel.first().pokemonModel)
@@ -27,5 +27,5 @@ class PokemonDetailRepository(
 
 data class CacheDetails(
     val endpoint: String,
-    val pokemonModel: PokemonModel
+    val pokemonModel: PokemonDetailModel
 )

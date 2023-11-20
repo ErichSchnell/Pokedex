@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.ui.components.ItemPokedex
 
@@ -22,7 +23,7 @@ import com.jereschneider.pokedex.ui.components.ItemPokedex
 @Composable
 fun HomeContent(
     pokemons: List<PokemonModel>,
-    goToDetail: () -> Unit
+    goToDetail: (String) -> Unit
     ){
     Column {
         Text(
@@ -45,7 +46,10 @@ fun HomeContent(
                 count = pokemons.size,
                 key = { pokemons[it].id }
             ) { index ->
-                ItemPokedex(pokemonModel = pokemons[index]){ goToDetail() }
+                ItemPokedex(
+                    pokemonModel = pokemons[index],
+                    goToDetail = { goToDetail(it) }
+                )
             }
         }
     }

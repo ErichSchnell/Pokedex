@@ -170,9 +170,6 @@ private fun Details(detailAbout: About){
         item{ DetailItem(title = "Weight", value = detailAbout.weight) }
         item{ DetailItem(title = "Abilities", value = detailAbout.abilities) }
         item { Spacer(Modifier.size(40.dp)) }
-        item{ DetailItem(title = "Gender", value = detailAbout.gender) }
-        item{ DetailItem(title = "Egg Groups", value = detailAbout.eggGroup) }
-        item{ DetailItem(title = "Egg Cycle", value = detailAbout.eggCycle) }
     }
 }
 
@@ -204,10 +201,7 @@ private fun DetailContentPreview() {
         species = "Seed",
         height = "2`3.6\" (0.70 cm)",
         weight = "11.2 lbs (6.9 kg)",
-        abilities = "Overgrow, Chlorophyl",
-        gender = "???",
-        eggGroup = "Monster",
-        eggCycle = "Grass"
+        abilities = "Overgrow, Chlorophyl"
     )
     val detailPokemon = PokemonDetailModel(pokemonModel, about)
     DetailContent(detailPokemon = detailPokemon, onBackClick = { }, onSubscribe = {})

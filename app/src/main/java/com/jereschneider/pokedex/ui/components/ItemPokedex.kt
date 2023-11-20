@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jereschneider.pokedex.R
+import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,14 +43,14 @@ import com.jereschneider.pokedex.domain.models.PokemonModel
 fun ItemPokedex(
     modifier: Modifier = Modifier,
     pokemonModel: PokemonModel,
-    goToDetail: () -> Unit
-    ){
+    goToDetail: (String) -> Unit
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
             .clip(RoundedCornerShape(14)),
-        onClick = { goToDetail() }
+        onClick = { goToDetail(pokemonModel.name) }
     ) {
         Row(Modifier.fillMaxSize()) {
             Column(
@@ -67,8 +68,8 @@ fun ItemPokedex(
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.size(8.dp))
-                LazyColumn{
-                    items(pokemonModel.types){
+                LazyColumn {
+                    items(pokemonModel.types) {
                         Chip(title = it)
                         Spacer(modifier = Modifier.size(4.dp))
                     }
@@ -83,7 +84,7 @@ fun ItemPokedex(
 }
 
 @Composable
-private fun DecorateImage(){
+private fun DecorateImage() {
     Image(
         modifier = Modifier
             .height(120.dp)
@@ -97,9 +98,9 @@ private fun DecorateImage(){
 }
 
 @Composable
-private fun CustomImage(modifier: Modifier, pokemonModel: PokemonModel){
+private fun CustomImage(modifier: Modifier, pokemonModel: PokemonModel) {
     val showShimmer = remember { mutableStateOf(true) }
-    Box(modifier.background(color = pokemonModel.getBackgroundColor())){
+    Box(modifier.background(color = pokemonModel.getBackgroundColor())) {
         DecorateImage()
         AsyncImage(
             modifier = Modifier
@@ -120,8 +121,8 @@ private fun ItemPokedexPreview() {
     val pokemonModel = PokemonModel(
         id = 0,
         name = "bulbasaur",
-        types = listOf("grass","poison"),
+        types = listOf("grass", "poison"),
         urlImg = ""
     )
-    ItemPokedex(pokemonModel = pokemonModel){}
+    ItemPokedex(pokemonModel = pokemonModel) {}
 }

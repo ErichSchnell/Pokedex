@@ -9,8 +9,5 @@ data class About(
     val species: String,
     val height: String,
     val weight: String,
-    val abilities: String,
-    val gender: String,
-    val eggGroup: String,
-    val eggCycle: String,
+    val abilities: String
 )
