@@ -3,8 +3,9 @@ package com.jereschneider.pokedex.domain.usecases
 import com.jereschneider.pokedex.domain.interfaces.PokemonDetailRepositoryInterface
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.StatusResult
+import javax.inject.Inject
 
-class GetPokemonDetailUseCase(
+class GetPokemonDetailUseCase @Inject constructor(
     private val pokemonDetailRepository: PokemonDetailRepositoryInterface
 ) {
     suspend operator fun invoke(pokemonName: String): StatusResult<PokemonDetailModel> =

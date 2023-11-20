@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jereschneider.pokedex.domain.models.About
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.ui.components.ItemPokedex
@@ -22,8 +23,8 @@ import com.jereschneider.pokedex.ui.components.ItemPokedex
 
 @Composable
 fun HomeContent(
-    pokemons: List<PokemonModel>,
-    goToDetail: (String) -> Unit
+    pokemons: List<PokemonDetailModel>,
+    goToDetail: (PokemonDetailModel) -> Unit
     ){
     Column {
         Text(
@@ -44,11 +45,11 @@ fun HomeContent(
         ) {
             items(
                 count = pokemons.size,
-                key = { pokemons[it].id }
+                key = { pokemons[it].pokemon.id }
             ) { index ->
                 ItemPokedex(
-                    pokemonModel = pokemons[index],
-                    goToDetail = { goToDetail(it) }
+                    pokemonDetailModel = pokemons[index],
+                    goToDetail = { goToDetail(pokemons[index]) }
                 )
             }
         }
@@ -59,9 +60,18 @@ fun HomeContent(
 @Composable
 private fun HomeContentPreview(){
     val pokemons = listOf(
-        PokemonModel(0, "Bulbasaur", "", listOf("grass", "poison")),
-        PokemonModel(1, "Ivysaur", "", listOf("grass", "poison")),
-        PokemonModel(2, "Ventasaur", "", listOf("grass", "poison"))
+        PokemonDetailModel(
+            PokemonModel(0, "Bulbasaur", "", listOf("grass", "poison")),
+            About("","","","")
+        ),
+        PokemonDetailModel(
+            PokemonModel(1, "Ivysaur", "", listOf("grass", "poison")),
+            About("","","","")
+        ),
+        PokemonDetailModel(
+            PokemonModel(2, "Ventasaur", "", listOf("grass", "poison")),
+            About("","","","")
+        )
     )
     HomeContent(pokemons = pokemons){}
 }

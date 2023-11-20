@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jereschneider.pokedex.R
+import com.jereschneider.pokedex.domain.models.About
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 
@@ -42,34 +43,34 @@ import com.jereschneider.pokedex.domain.models.PokemonModel
 @Composable
 fun ItemPokedex(
     modifier: Modifier = Modifier,
-    pokemonModel: PokemonModel,
-    goToDetail: (String) -> Unit
+    pokemonDetailModel: PokemonDetailModel,
+    goToDetail: (PokemonDetailModel) -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
             .clip(RoundedCornerShape(14)),
-        onClick = { goToDetail(pokemonModel.name) }
+        onClick = { goToDetail(pokemonDetailModel) }
     ) {
         Row(Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1.2f)
-                    .background(color = pokemonModel.getBackgroundColor()),
+                    .background(color = pokemonDetailModel.pokemon.getBackgroundColor()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = pokemonModel.name,
+                    text = pokemonDetailModel.pokemon.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 LazyColumn {
-                    items(pokemonModel.types) {
+                    items(pokemonDetailModel.pokemon.types) {
                         Chip(title = it)
                         Spacer(modifier = Modifier.size(4.dp))
                     }
@@ -77,7 +78,7 @@ fun ItemPokedex(
             }
             CustomImage(
                 modifier = Modifier.weight(1f),
-                pokemonModel = pokemonModel
+                pokemonModel = pokemonDetailModel.pokemon
             )
         }
     }
@@ -124,5 +125,9 @@ private fun ItemPokedexPreview() {
         types = listOf("grass", "poison"),
         urlImg = ""
     )
-    ItemPokedex(pokemonModel = pokemonModel) {}
+    val pokeDetail = PokemonDetailModel(
+        pokemonModel,
+        About("", "", "", "")
+    )
+    ItemPokedex(pokemonDetailModel = pokeDetail) {}
 }

@@ -11,6 +11,7 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
+import io.ktor.serialization.JsonConvertException
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.net.ConnectException
@@ -64,16 +65,24 @@ internal suspend fun BaseClient.fetchPokemonPage(navigateToPage: String? = null)
     val errorMessage = "No se pudo obtener el listado de pokemones"
     val httpStatus = get(page, errorMessage)
 
-    httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
-
-    return StatusResult.Error(httpStatus.errorMessage)
+    try {
+        httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
+        return StatusResult.Error(httpStatus.errorMessage)
+    } catch (e: JsonConvertException) {
+        Log.e("fetchPokemonPage: ", "ERROR DE PARSEO: $e")
+        return StatusResult.Error( errorMessage )
+    }
 }
 
 internal suspend fun BaseClient.fetchPokemonDetail(pokemonName: String): StatusResult<PokemonDetailDto> {
     val errorMessage = "No se pudo cargar el pokemon"
     val httpStatus = get("$BASE_URL/$pokemonName", errorMessage)
 
-    httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
-
-    return StatusResult.Error(httpStatus.errorMessage)
+    try {
+        httpStatus.httpResponse?.let { return StatusResult.Success(value = it.body()) }
+        return StatusResult.Error(httpStatus.errorMessage)
+    } catch (e: JsonConvertException) {
+        Log.e("fetchPokemonPage: ", "ERROR DE PARSEO: $e")
+        return StatusResult.Error( errorMessage )
+    }
 }
