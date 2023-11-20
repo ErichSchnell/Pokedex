@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.hilt.plugin)
     id("kotlinx-serialization")
 }
 
@@ -60,10 +62,17 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.bundles.ktor)
 
+    implementation(libs.bundles.hilt)
+    kapt (libs.hilt.compiler)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.bundles.android.testing)
     androidTestImplementation(platform(libs.compose.bom))
 
     debugImplementation(libs.bundles.compose.ui.debug)
+}
+
+kapt {
+    correctErrorTypes = true
 }

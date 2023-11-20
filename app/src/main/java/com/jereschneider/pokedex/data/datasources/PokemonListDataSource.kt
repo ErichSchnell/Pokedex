@@ -8,8 +8,11 @@ import com.jereschneider.pokedex.domain.models.PokePage
 import com.jereschneider.pokedex.domain.models.StatusResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PokemonListDataSource(
+@Singleton
+class PokemonListDataSource @Inject constructor(
     private val baseClient: BaseClient
 ) : PokemonListDataSourceInterface {
     override suspend fun fetchPokePage(navigateToPage: String?): StatusResult<PokePage> =

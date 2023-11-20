@@ -8,8 +8,11 @@ import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.domain.models.StatusResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PokemonDetailRemoteDataSource(
+@Singleton
+class PokemonDetailRemoteDataSource @Inject constructor(
     private val baseClient: BaseClient
 ) : PokemonDetailRemoteDataSourceInterface {
     override suspend fun getPokemonDetail(endpoint: String): StatusResult<PokemonModel> =

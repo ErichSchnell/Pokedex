@@ -1,13 +1,14 @@
 package com.jereschneider.pokedex.domain.usecases
 
-import com.jereschneider.pokedex.data.repository.PokemonDetailRepository
+import com.jereschneider.pokedex.domain.interfaces.PokemonDetailRepositoryInterface
 import com.jereschneider.pokedex.domain.interfaces.PokemonRawListRepositoryInterface
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.domain.models.StatusResult
+import javax.inject.Inject
 
-class GetPokemonListUseCase(
+class GetPokemonListUseCase @Inject constructor(
     private val pokemonRawListRepository: PokemonRawListRepositoryInterface,
-    private val pokemonDetailRepository: PokemonDetailRepository
+    private val pokemonDetailRepository: PokemonDetailRepositoryInterface
 ) {
     suspend operator fun invoke(): StatusResult<List<PokemonModel>> =
         when ( val result = pokemonRawListRepository.nextPokePage() ) {

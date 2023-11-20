@@ -4,8 +4,11 @@ import com.jereschneider.pokedex.data.interfaces.PokemonListDataSourceInterface
 import com.jereschneider.pokedex.domain.interfaces.PokemonRawListRepositoryInterface
 import com.jereschneider.pokedex.domain.models.PokemonRaw
 import com.jereschneider.pokedex.domain.models.StatusResult
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PokemonRawListRepository(
+@Singleton
+class PokemonRawListRepository @Inject constructor(
     private val datasource: PokemonListDataSourceInterface
 ) : PokemonRawListRepositoryInterface {
     private var previousPage: String? = null

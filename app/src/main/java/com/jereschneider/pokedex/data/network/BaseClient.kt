@@ -15,9 +15,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.net.ConnectException
 import java.net.UnknownHostException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class BaseClient constructor(engine: HttpClientEngine) {
+@Singleton
+class BaseClient @Inject constructor(engine: HttpClientEngine) {
     companion object {
         internal const val BASE_URL = "https://pokeapi.co/api/v2"
     }

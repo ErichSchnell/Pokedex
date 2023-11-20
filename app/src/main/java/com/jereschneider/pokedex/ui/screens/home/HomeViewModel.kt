@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.jereschneider.pokedex.ui.models.HomeState
 import com.jereschneider.pokedex.domain.models.StatusResult
 import com.jereschneider.pokedex.domain.usecases.GetPokemonListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val getPokemonListUseCase: GetPokemonListUseCase
 ) : ViewModel() {
 
