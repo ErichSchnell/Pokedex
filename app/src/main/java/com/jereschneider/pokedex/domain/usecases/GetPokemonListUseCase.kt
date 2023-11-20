@@ -3,8 +3,9 @@ package com.jereschneider.pokedex.domain.usecases
 import com.jereschneider.pokedex.domain.interfaces.PokemonRawListRepositoryInterface
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.domain.models.StatusResult
+import javax.inject.Inject
 
-class GetPokemonListUseCase(
+class GetPokemonListUseCase @Inject constructor(
     private val pokemonRawListRepository: PokemonRawListRepositoryInterface,
     private val getPokemonDetailUseCase: GetPokemonDetailUseCase
 ) {

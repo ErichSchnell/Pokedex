@@ -4,8 +4,11 @@ import com.jereschneider.pokedex.data.interfaces.PokemonDetailRemoteDataSourceIn
 import com.jereschneider.pokedex.domain.interfaces.PokemonDetailRepositoryInterface
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.StatusResult
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PokemonDetailRepository(
+@Singleton
+class PokemonDetailRepository @Inject constructor(
     private val remoteDatasource: PokemonDetailRemoteDataSourceInterface
 ) : PokemonDetailRepositoryInterface {
     private val cacheDetails = mutableListOf<CacheDetails>()
