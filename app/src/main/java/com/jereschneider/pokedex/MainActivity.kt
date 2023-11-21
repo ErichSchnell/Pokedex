@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.jereschneider.pokedex.ui.navigation.PokedexNavGraph
+import com.jereschneider.pokedex.ui.screens.details.DetailViewModel
 import com.jereschneider.pokedex.ui.screens.home.HomeViewModel
 import com.jereschneider.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,10 +19,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val homeViewModel = hiltViewModel<HomeViewModel>()
+            val detailViewModel = hiltViewModel<DetailViewModel>()
             PokedexTheme {
                 PokedexNavGraph(
                     navController = navController,
-                    homeViewModel = homeViewModel
+                    homeViewModel = homeViewModel,
+                    detailViewModel = detailViewModel
                 )
             }
         }

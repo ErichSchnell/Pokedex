@@ -1,5 +1,6 @@
 package com.jereschneider.pokedex.data.mappers
 
+import com.jereschneider.pokedex.data.database.PokemonDetailEntity
 import com.jereschneider.pokedex.data.models.PokePageDto
 import com.jereschneider.pokedex.data.models.PokemonDetailDto
 import com.jereschneider.pokedex.data.models.Type
@@ -26,6 +27,31 @@ fun PokemonDetailDto.toPokemonDetailModel() : PokemonDetailModel {
         about = about
     )
 }
+
+fun PokemonDetailModel.toEntity() = PokemonDetailEntity(
+    id = this.pokemon.id,
+    name =  this.pokemon.name,
+    urlImg =  this.pokemon.urlImg,
+    species =  this.about.species,
+    height =  this.about.height,
+    weight =  this.about.weight,
+    abilities =  this.about.abilities
+)
+
+fun PokemonDetailEntity.toModel() = PokemonDetailModel(
+    pokemon = PokemonModel(
+        id = this.id,
+        name =  this.name,
+        urlImg =  this.urlImg,
+        types = emptyList()
+    ),
+    about = About(
+        species =  this.species,
+        height =  this.height,
+        weight =  this.weight,
+        abilities =  this.abilities
+    )
+)
 
 fun Type.toTypeString() = this.type.name
 

@@ -8,6 +8,7 @@ import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.ui.navigation.utils.navigateTo
 import com.jereschneider.pokedex.ui.navigation.utils.parcelable
 import com.jereschneider.pokedex.ui.screens.details.DetailContent
+import com.jereschneider.pokedex.ui.screens.details.DetailViewModel
 import com.jereschneider.pokedex.ui.screens.home.HomeScreen
 import com.jereschneider.pokedex.ui.screens.home.HomeViewModel
 
@@ -15,7 +16,8 @@ import com.jereschneider.pokedex.ui.screens.home.HomeViewModel
 fun PokedexNavGraph(
     navController: NavHostController,
     initialRoute: String = PokedexNavigation.Home.route,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    detailViewModel: DetailViewModel
 ) {
     NavHost(
         navController = navController,
@@ -37,7 +39,9 @@ fun PokedexNavGraph(
                 DetailContent(
                     detailPokemon = detailPokemon,
                     onBackClick = { navController.popBackStack() },
-                    onSubscribe = {}
+                    onSubscribe = {
+                        detailViewModel.setFavourite(detailPokemon)
+                    }
                 )
             }
         }
