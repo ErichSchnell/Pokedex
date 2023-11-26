@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PokemonDetailModel(
     val pokemon: PokemonModel,
-    val about: About,
+    val about: About
 ) : Parcelable
 
 @Parcelize

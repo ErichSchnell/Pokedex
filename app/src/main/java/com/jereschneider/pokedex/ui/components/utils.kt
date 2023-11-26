@@ -21,9 +21,9 @@ import com.jereschneider.pokedex.domain.models.PokemonModel
 fun Modifier.shimmerEffect(
     isShow: Boolean = true,
     baseColor: Color = Color(0xFFB8B5B5),
-    transitionColor: Color =  Color(0xFF8F8B8B)
+    transitionColor: Color = Color(0xFF8F8B8B)
 ): Modifier = composed {
-    if(isShow){
+    if (isShow) {
         var size by remember { mutableStateOf(IntSize.Zero) }
         val transition = rememberInfiniteTransition(label = "")
         val startOffsetX by transition.animateFloat(
@@ -44,20 +44,25 @@ fun Modifier.shimmerEffect(
                 end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
             )
         ).onGloballyPositioned { size = it.size }
-    }
-    else{
+    } else {
         background(color = Color.Transparent)
     }
 }
 
-fun PokemonModel.getBackgroundColor() : Color {
-    return when {
-        this.types.first().contains("grass") || this.types.first().contains("poison") -> Color(71,209,177)
-        this.types.first().contains("fire") || this.types.first().contains("flying") -> Color(251,108,108)
-        this.types.first().contains("water") -> Color(118,191,254)
-        this.types.first().contains("electric") -> Color(255,216,111)
-        this.types.first().contains("bug") -> Color(191, 142, 75, 255)
-        this.types.contains("flying") -> Color(144, 186, 201, 255)
-        else ->  Color(160, 160, 160, 255)
+fun PokemonModel.getBackgroundColor(): Color {
+    types.apply {
+        return when {
+            containerOrFalse("grass") -> Color(71, 209, 177)
+            containerOrFalse("poison") -> Color(71, 209, 177)
+            containerOrFalse("fire") -> Color(251, 108, 108)
+            containerOrFalse("flying") -> Color(251, 108, 108)
+            containerOrFalse("water") -> Color(118, 191, 254)
+            containerOrFalse("electric") -> Color(255, 216, 111)
+            containerOrFalse("bug") -> Color(191, 142, 75, 255)
+            contains("flying") -> Color(144, 186, 201, 255)
+            else -> Color(160, 160, 160, 255)
+        }
     }
 }
+
+fun List<String>.containerOrFalse(value: String) = firstOrNull()?.contains(value) ?: false

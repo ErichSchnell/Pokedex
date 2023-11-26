@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.hilt.plugin)
     id("kotlinx-serialization")
     id("kotlin-parcelize")
@@ -52,10 +52,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    hilt {
+        enableAggregatingTask = true
+    }
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose.ui)
@@ -65,7 +67,11 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
 
     implementation(libs.bundles.hilt)
-    kapt (libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.room)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
 
@@ -73,8 +79,4 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
 
     debugImplementation(libs.bundles.compose.ui.debug)
-}
-
-kapt {
-    correctErrorTypes = true
 }

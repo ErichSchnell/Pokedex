@@ -14,7 +14,9 @@ ktor-version = "2.3.6"
 org-jetbrains-kotlin-plugin-serialization = "1.9.20"
 hilt-navigation-version = "1.1.0"
 androidx-navigation = "2.7.5"
-compose-navigation = "2.5.3"
+compose-navigation = "2.7.5"
+androidx-room = "2.6.0"
+com-google-devtools-ksp = "1.9.20-1.0.14"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -46,13 +48,16 @@ hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref 
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-compiler" }
 hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-version"}
 
+androidx-room = {group = "androidx.room", name = "room-ktx", version.ref = "androidx-room"}
+androidx-room-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "androidx-room"}
+
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "org-jetbrains-kotlin-android" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "org-jetbrains-kotlin-plugin-serialization"}
 io-ktor-plugin = { id = "io.ktor.plugin", version.ref = "ktor-version"}
 hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt-compiler"}
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp"}
 
 [bundles]
 compose-ui = [

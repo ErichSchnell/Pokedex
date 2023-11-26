@@ -1,12 +1,21 @@
 package com.jereschneider.pokedex.di
 
+import android.app.Application
+import androidx.room.Room
+import com.jereschneider.pokedex.data.database.FavouritePokemonDB
+import com.jereschneider.pokedex.data.datasources.FavouritePokemonDataSource
 import com.jereschneider.pokedex.data.datasources.PokemonDetailRemoteDataSource
 import com.jereschneider.pokedex.data.datasources.PokemonListDataSource
+import com.jereschneider.pokedex.data.interfaces.FavouritePokemonDataSourceInterface
 import com.jereschneider.pokedex.data.interfaces.PokemonDetailRemoteDataSourceInterface
 import com.jereschneider.pokedex.data.interfaces.PokemonListDataSourceInterface
 import com.jereschneider.pokedex.data.network.BaseClient
 import com.jereschneider.pokedex.data.repository.PokemonDetailRepository
 import com.jereschneider.pokedex.data.repository.PokemonRawListRepository
+import com.jereschneider.pokedex.data.repository.StorageRepository
+import com.jereschneider.pokedex.domain.interfaces.DeleteFavourite_StorageRepositoryInterface
+import com.jereschneider.pokedex.domain.interfaces.Favourite_StorageRepositoryInterface
+import com.jereschneider.pokedex.domain.interfaces.GetFavourite_StorageRepositoryInterface
 import com.jereschneider.pokedex.domain.interfaces.PokemonDetailRepositoryInterface
 import com.jereschneider.pokedex.domain.interfaces.PokemonRawListRepositoryInterface
 import dagger.Binds
@@ -22,6 +31,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object PokeModule {
     //Data Layer
+    @Provides
+    @Singleton
+    fun provideFavouriteDatabase(app: Application): FavouritePokemonDB {
+        return Room.databaseBuilder(
+            app,
+            FavouritePokemonDB::class.java,
+            FavouritePokemonDB.DB_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSubscribeMovieDataSource(db: FavouritePokemonDB)
+            : FavouritePokemonDataSourceInterface = FavouritePokemonDataSource(db.favouritePokemonDAO)
+
     @Provides
     @Singleton
     fun provideBaseClient(engine: HttpClientEngine): BaseClient = BaseClient(engine)
@@ -57,4 +81,15 @@ interface BindPokemonDetailRepository {
 interface BindPokemonRawListRepository {
     @Binds
     fun bind(impl: PokemonRawListRepository): PokemonRawListRepositoryInterface
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface BindStorageRepository {
+    @Binds
+    fun bindDelete(impl: StorageRepository): DeleteFavourite_StorageRepositoryInterface
+    @Binds
+    fun bindFav(impl: StorageRepository): Favourite_StorageRepositoryInterface
+    @Binds
+    fun bindGetFav(impl: StorageRepository): GetFavourite_StorageRepositoryInterface
 }
