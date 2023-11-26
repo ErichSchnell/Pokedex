@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -19,7 +20,8 @@ import com.jereschneider.pokedex.R
 @Composable
 fun Toolbar(
     onBackClick: () -> Unit,
-    onSubscribe: (() -> Unit)? = null
+    onAction: (() -> Unit)? = null,
+    isOnActionSelected: Boolean = false
 ){
     Row(
         modifier = Modifier.padding(top = 24.dp)
@@ -35,13 +37,13 @@ fun Toolbar(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        onSubscribe?.let { onClick ->
+        onAction?.let { onClick ->
             IconButton(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 onClick = { onClick() }
             ) {
                 Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
+                    imageVector = if(isOnActionSelected) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     tint = Color.White,
                     contentDescription = stringResource(R.string.toolbar_end_icon_description)
                 )
@@ -52,4 +54,4 @@ fun Toolbar(
 
 @Preview
 @Composable
-private fun ToolbarPreview() = Toolbar(onBackClick = {}, onSubscribe = {})
+private fun ToolbarPreview() = Toolbar(onBackClick = {}, onAction = {})

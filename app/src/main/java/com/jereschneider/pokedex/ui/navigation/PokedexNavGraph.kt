@@ -36,12 +36,12 @@ fun PokedexNavGraph(
         composable(route = PokedexNavigation.Detail.route) {
             val detailPokemon = navController.parcelable<PokemonDetailModel>()
             detailPokemon?.let {
+                val pokemon = it.copy(pokemon = it.pokemon.copy(isFav = true))
                 DetailContent(
                     detailPokemon = detailPokemon,
                     onBackClick = { navController.popBackStack() },
-                    onSubscribe = {
-                        detailViewModel.setFavourite(detailPokemon)
-                    }
+                    onSubscribe = { detailViewModel.setFavourite(pokemon) },
+                    onUnsubscribe = { detailViewModel.deleteFavourite(pokemon) }
                 )
             }
         }

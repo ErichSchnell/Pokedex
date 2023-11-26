@@ -14,7 +14,8 @@ fun PokemonDetailDto.toPokemonDetailModel() : PokemonDetailModel {
         id = id,
         name = name,
         urlImg = sprites.other?.officialArtwork?.frontDefault ?: this.sprites.frontDefault,
-        types = types.map { it.toTypeString() }
+        types = types.map { it.toTypeString() },
+        isFav = false
     )
     val about = About(
         species = species.name,
@@ -35,7 +36,9 @@ fun PokemonDetailModel.toEntity() = PokemonDetailEntity(
     species =  this.about.species,
     height =  this.about.height,
     weight =  this.about.weight,
-    abilities =  this.about.abilities
+    abilities =  this.about.abilities,
+    types = this.pokemon.types,
+    isFav = this.pokemon.isFav
 )
 
 fun PokemonDetailEntity.toModel() = PokemonDetailModel(
@@ -43,7 +46,8 @@ fun PokemonDetailEntity.toModel() = PokemonDetailModel(
         id = this.id,
         name =  this.name,
         urlImg =  this.urlImg,
-        types = emptyList()
+        types = this.types,
+        isFav = this.isFav
     ),
     about = About(
         species =  this.species,

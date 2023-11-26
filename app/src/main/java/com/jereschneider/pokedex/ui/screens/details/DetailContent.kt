@@ -18,6 +18,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,14 +48,24 @@ import com.jereschneider.pokedex.ui.components.getBackgroundColor
 fun DetailContent(
     detailPokemon: PokemonDetailModel,
     onBackClick: () -> Unit,
-    onSubscribe: () -> Unit
-){
+    onSubscribe: () -> Unit,
+    onUnsubscribe: () -> Unit,
+) {
+    var isFav by remember { mutableStateOf(detailPokemon.pokemon.isFav) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = detailPokemon.pokemon.getBackgroundColor())
     ) {
-        Toolbar(onBackClick = { onBackClick() }, onSubscribe = { onSubscribe() })
+        Toolbar(
+            onBackClick = { onBackClick() },
+            onAction = {
+                if (isFav) onUnsubscribe()
+                else onSubscribe()
+                isFav = !isFav
+            },
+            isOnActionSelected = isFav
+        )
         Title(text = detailPokemon.pokemon.name)
         Types(types = detailPokemon.pokemon.types)
         Identificator(id = detailPokemon.pokemon.id.toString())
@@ -74,7 +88,7 @@ fun DetailContent(
 }
 
 @Composable
-private fun DecorateImage(){
+private fun DecorateImage() {
     Image(
         modifier = Modifier
             .padding(start = 180.dp)
@@ -89,7 +103,7 @@ private fun DecorateImage(){
 }
 
 @Composable
-private fun Title(text: String){
+private fun Title(text: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,9 +116,9 @@ private fun Title(text: String){
 }
 
 @Composable
-private fun Types(types: List<String>){
+private fun Types(types: List<String>) {
     LazyRow(Modifier.padding(horizontal = 24.dp)) {
-        items(types){
+        items(types) {
             Chip(title = it)
             Spacer(modifier = Modifier.size(12.dp))
         }
@@ -112,7 +126,7 @@ private fun Types(types: List<String>){
 }
 
 @Composable
-private fun Identificator(id: String){
+private fun Identificator(id: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,7 +140,7 @@ private fun Identificator(id: String){
 }
 
 @Composable
-private fun PokeImage(url: String){
+private fun PokeImage(url: String) {
     AsyncImage(
         modifier = Modifier
             .padding(top = 24.dp)
@@ -140,7 +154,7 @@ private fun PokeImage(url: String){
 }
 
 @Composable
-private fun About(){
+private fun About() {
     Text(
         modifier = Modifier.padding(start = 24.dp, top = 32.dp, bottom = 12.dp),
         text = "About",
@@ -150,35 +164,38 @@ private fun About(){
 }
 
 @Composable
-private fun Separator(){
-    Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .height(1.dp)
-        .padding(horizontal = 12.dp)
-        .background(color = Color.LightGray)
+private fun Separator() {
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .padding(horizontal = 12.dp)
+            .background(color = Color.LightGray)
     )
 }
 
 @Composable
-private fun Details(detailAbout: About){
+private fun Details(detailAbout: About) {
     LazyColumn(
         Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp)) {
-        item{ DetailItem(title = "Species", value = detailAbout.species) }
-        item{ DetailItem(title = "Height", value = detailAbout.height) }
-        item{ DetailItem(title = "Weight", value = detailAbout.weight) }
-        item{ DetailItem(title = "Abilities", value = detailAbout.abilities) }
+            .padding(horizontal = 24.dp)
+    ) {
+        item { DetailItem(title = "Species", value = detailAbout.species) }
+        item { DetailItem(title = "Height", value = detailAbout.height) }
+        item { DetailItem(title = "Weight", value = detailAbout.weight) }
+        item { DetailItem(title = "Abilities", value = detailAbout.abilities) }
         item { Spacer(Modifier.size(40.dp)) }
     }
 }
 
 @Composable
-private fun DetailItem(title: String, value: String){
+private fun DetailItem(title: String, value: String) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp)) {
+            .padding(top = 12.dp)
+    ) {
         Text(
             text = title,
             color = Color.Gray
@@ -194,8 +211,9 @@ private fun DetailContentPreview() {
     val pokemonModel = PokemonModel(
         id = 1,
         name = "bulbasaur",
-        types = listOf("grass","poison"),
-        urlImg = ""
+        types = listOf("grass", "poison"),
+        urlImg = "",
+        isFav = true
     )
     val about = About(
         species = "Seed",
@@ -204,5 +222,10 @@ private fun DetailContentPreview() {
         abilities = "Overgrow, Chlorophyl"
     )
     val detailPokemon = PokemonDetailModel(pokemonModel, about)
-    DetailContent(detailPokemon = detailPokemon, onBackClick = { }, onSubscribe = {})
+    DetailContent(
+        detailPokemon = detailPokemon,
+        onBackClick = {},
+        onSubscribe = {},
+        onUnsubscribe = {},
+    )
 }

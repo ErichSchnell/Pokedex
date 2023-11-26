@@ -8,5 +8,6 @@ data class PokemonModel(
     val id: Long,
     val name: String,
     val urlImg: String,
-    val types: List<String>
+    val types: List<String>,
+    val isFav: Boolean
 ) : Parcelable

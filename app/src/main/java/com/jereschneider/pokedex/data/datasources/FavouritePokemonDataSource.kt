@@ -7,7 +7,7 @@ import com.jereschneider.pokedex.data.mappers.toModel
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,9 +28,9 @@ class FavouritePokemonDataSource @Inject constructor(
 
     override suspend fun getFavourites(): Flow<List<PokemonDetailModel>> =
         withContext(Dispatchers.IO) {
-            db.getPokemons().transform { list ->
-                list.map {
-                    it.toModel()
+            db.getPokemons().map {
+                it.map { pokemonDetailEntity ->
+                    pokemonDetailEntity.toModel()
                 }
             }
         }
