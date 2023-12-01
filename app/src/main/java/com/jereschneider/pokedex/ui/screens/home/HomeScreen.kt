@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Brush
@@ -21,14 +20,17 @@ import androidx.compose.ui.unit.sp
 import com.jereschneider.pokedex.R
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.ui.models.ComponentState
+import com.jereschneider.pokedex.ui.models.HomeState
 import com.jereschneider.pokedex.ui.screens.common.ErrorView
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel,
-    goToDetail: (PokemonDetailModel) -> Unit
+    homeState: HomeState,
+    lastIndex: Int,
+    onLastIndex: (Int) -> Unit,
+    goToDetail: (PokemonDetailModel) -> Unit,
+    onFetchMorePokemons: () -> Unit,
 ) {
-    val homeState = homeViewModel.state.collectAsState().value
     Column(Modifier.backgroundContent()) {
         Title()
         when (val pokeFavs = homeState.favPokemons) {
@@ -39,7 +41,15 @@ fun HomeScreen(
         Spacer(modifier = Modifier.size(12.dp))
         when (val pokeList = homeState.listPokemons) {
             ComponentState.Loading -> HomeContentLoading()
-            is ComponentState.Success -> HomeContent(pokeList.pokemons) { goToDetail(it) }
+            is ComponentState.Success -> HomeContent(
+                pokemons = pokeList.pokemons,
+                isLoading = homeState.isLoadingFetch,
+                lastIndex = lastIndex,
+                goToDetail = { goToDetail(it) },
+                onFetchMorePokemons = { onFetchMorePokemons() },
+                onlastIndex = { onLastIndex(it) }
+            )
+
             is ComponentState.Error -> ErrorView(pokeList.message)
         }
     }

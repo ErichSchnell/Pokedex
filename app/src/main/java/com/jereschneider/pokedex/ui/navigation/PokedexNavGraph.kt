@@ -1,6 +1,7 @@
 package com.jereschneider.pokedex.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +17,8 @@ import com.jereschneider.pokedex.ui.screens.home.HomeViewModel
 fun PokedexNavGraph(
     navController: NavHostController,
     initialRoute: String = PokedexNavigation.Home.route,
+    lastIndex: Int,
+    onLastIndex: (Int) -> Unit,
     homeViewModel: HomeViewModel,
     detailViewModel: DetailViewModel
 ) {
@@ -25,13 +28,17 @@ fun PokedexNavGraph(
     ) {
         composable(route = PokedexNavigation.Home.route) {
             HomeScreen(
-                homeViewModel = homeViewModel
-            ) { pokemonDetail ->
-                navController.navigateTo(
-                    route = PokedexNavigation.Detail.route,
-                    value = pokemonDetail
-                )
-            }
+                homeState = homeViewModel.state.collectAsState().value,
+                lastIndex = lastIndex,
+                onFetchMorePokemons = { homeViewModel.loadMorePokemons() },
+                onLastIndex = { onLastIndex(it) },
+                goToDetail = { pokemonDetail ->
+                    navController.navigateTo(
+                        route = PokedexNavigation.Detail.route,
+                        value = pokemonDetail
+                    )
+                }
+            )
         }
         composable(route = PokedexNavigation.Detail.route) {
             val detailPokemon = navController.parcelable<PokemonDetailModel>()

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -13,12 +14,17 @@ import com.jereschneider.pokedex.domain.models.About
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.ui.components.ItemPokedex
+import com.jereschneider.pokedex.ui.components.ShimmerBox
 
 
 @Composable
 fun HomeContent(
     pokemons: List<PokemonDetailModel>,
-    goToDetail: (PokemonDetailModel) -> Unit
+    isLoading: Boolean,
+    lastIndex: Int,
+    onlastIndex: (Int) -> Unit,
+    goToDetail: (PokemonDetailModel) -> Unit,
+    onFetchMorePokemons: () -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier.padding(top = 10.dp),
@@ -35,8 +41,20 @@ fun HomeContent(
                 pokemonDetailModel = pokemons[index],
                 goToDetail = { goToDetail(pokemons[index]) }
             )
+            if (lastIndex < index) onlastIndex(index)
+        }
+        if (isLoading) {
+            item { ShimmerBox() }
+            item { ShimmerBox() }
         }
     }
+
+    LaunchedEffect(lastIndex) {
+        if (lastIndex >= pokemons.size - 5) {
+            onFetchMorePokemons()
+        }
+    }
+
 }
 
 @Preview(device = "id:pixel_7_pro")
@@ -56,5 +74,12 @@ private fun HomeContentPreview() {
             About("", "", "", ""),
         )
     )
-    HomeContent(pokemons = pokemons) {}
+    HomeContent(
+        pokemons = pokemons,
+        isLoading = true,
+        lastIndex = 0,
+        goToDetail = {},
+        onFetchMorePokemons = {},
+        onlastIndex = {}
+    )
 }
