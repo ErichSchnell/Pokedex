@@ -26,17 +26,45 @@ class HomeViewModel @Inject constructor(
 
     var state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
         private set
+        get() {
+            if (field == null) {
+                field = MutableStateFlow(HomeState())
+            }
+            return field
+        }
 
     private fun fetchPage() = viewModelScope.launch {
+        state.update { it.copy(isLoadingFetch = true) }
         when (val res = getPokemonListUseCase()) {
             is StatusResult.Error -> state.update {
-                it.copy(listPokemons = ComponentState.Error(res.message))
+                it.copy(
+                    listPokemons = ComponentState.Error(res.message),
+                    isLoadingFetch = false
+                )
             }
 
             is StatusResult.Success -> state.update {
-                it.copy(listPokemons = ComponentState.Success(res.value))
+                when (val listPokemons = it.listPokemons) {
+                    is ComponentState.Success -> {
+                        val pokemons = listPokemons.pokemons + res.value
+                        it.copy(
+                            listPokemons = ComponentState.Success(pokemons),
+                            isLoadingFetch = false
+                        )
+                    }
+
+                    else -> it.copy(
+                        listPokemons = ComponentState.Success(res.value),
+                        isLoadingFetch = false
+                    )
+                }
             }
         }
+    }
+
+    fun loadMorePokemons() {
+        if (state.value.isLoadingFetch.not())
+            fetchPage()
     }
 
     private fun getFavouritePokemons() = viewModelScope.launch {

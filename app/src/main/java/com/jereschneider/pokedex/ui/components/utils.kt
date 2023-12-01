@@ -56,9 +56,12 @@ fun PokemonModel.getBackgroundColor(): Color {
             containerOrFalse("poison") -> Color(71, 209, 177)
             containerOrFalse("fire") -> Color(251, 108, 108)
             containerOrFalse("flying") -> Color(251, 108, 108)
-            containerOrFalse("water") -> Color(118, 191, 254)
             containerOrFalse("electric") -> Color(255, 216, 111)
             containerOrFalse("bug") -> Color(191, 142, 75, 255)
+            containerOrFalse("ground") -> Color(191, 142, 75, 255)
+            containerOrFalse("psychic") -> Color(178, 139, 179, 255)
+            contains("fairy") -> Color(118, 191, 254)
+            contains("water") -> Color(118, 191, 254)
             contains("flying") -> Color(144, 186, 201, 255)
             else -> Color(160, 160, 160, 255)
         }
