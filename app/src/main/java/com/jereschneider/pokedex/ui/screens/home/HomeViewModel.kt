@@ -62,10 +62,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun loadMorePokemons() = viewModelScope.launch {
-        if (state.value.isLoadingFetch.not()) {
+    fun loadMorePokemons() {
+        if (state.value.isLoadingFetch.not())
             fetchPage()
-        }
     }
 
     private fun getFavouritePokemons() = viewModelScope.launch {
