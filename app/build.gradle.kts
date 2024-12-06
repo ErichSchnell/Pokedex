@@ -6,16 +6,17 @@ plugins {
     alias(libs.plugins.hilt.plugin)
     id("kotlinx-serialization")
     id("kotlin-parcelize")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.jereschneider.pokedex"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jereschneider.pokedex"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -24,7 +25,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -32,6 +32,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -44,9 +45,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -55,6 +53,7 @@ android {
     hilt {
         enableAggregatingTask = true
     }
+
 }
 
 dependencies {

@@ -7,5 +7,6 @@ plugins {
     alias(libs.plugins.io.ktor.plugin) apply false
     alias(libs.plugins.hilt.plugin) apply false
     alias(libs.plugins.com.google.devtools.ksp) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block
