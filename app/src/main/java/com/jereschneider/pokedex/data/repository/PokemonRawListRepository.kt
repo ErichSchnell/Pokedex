@@ -16,7 +16,13 @@ class PokemonRawListRepository @Inject constructor(
 
     override suspend fun fetchPokePage(): StatusResult<List<PokemonRaw>> = fetchPage(null)
 
-    override suspend fun nextPokePage(): StatusResult<List<PokemonRaw>> = fetchPage(nextPage)
+    override suspend fun nextPokePage(): StatusResult<List<PokemonRaw>> {
+        return if (nextPage == null && previousPage != null){
+            StatusResult.Success(emptyList())
+        } else {
+            fetchPage(nextPage)
+        }
+    }
 
     override suspend fun previousPokePage(): StatusResult<List<PokemonRaw>> = fetchPage(previousPage)
 
