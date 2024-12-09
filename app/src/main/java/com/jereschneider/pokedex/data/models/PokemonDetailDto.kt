@@ -138,25 +138,25 @@ data class Versions (
 @Serializable
 data class Sprites (
     @SerialName("back_default")
-    val backDefault: String,
+    val backDefault: String?,
 
     @SerialName("back_female")
     val backFemale: JsonElement? = null,
 
     @SerialName("back_shiny")
-    val backShiny: String,
+    val backShiny: String?,
 
     @SerialName("back_shiny_female")
     val backShinyFemale: JsonElement? = null,
 
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_female")
     val frontFemale: JsonElement? = null,
 
     @SerialName("front_shiny")
-    val frontShiny: String,
+    val frontShiny: String?,
 
     @SerialName("front_shiny_female")
     val frontShinyFemale: JsonElement? = null,
@@ -177,22 +177,22 @@ data class GenerationI (
 @Serializable
 data class RedBlue (
     @SerialName("back_default")
-    val backDefault: String,
+    val backDefault: String?,
 
     @SerialName("back_gray")
-    val backGray: String,
+    val backGray: String?,
 
     @SerialName("back_transparent")
-    val backTransparent: String,
+    val backTransparent: String?,
 
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_gray")
-    val frontGray: String,
+    val frontGray: String?,
 
     @SerialName("front_transparent")
-    val frontTransparent: String
+    val frontTransparent: String?
 )
 
 @Serializable
@@ -205,43 +205,43 @@ data class GenerationIi (
 @Serializable
 data class Crystal (
     @SerialName("back_default")
-    val backDefault: String,
+    val backDefault: String?,
 
     @SerialName("back_shiny")
-    val backShiny: String,
+    val backShiny: String?,
 
     @SerialName("back_shiny_transparent")
-    val backShinyTransparent: String,
+    val backShinyTransparent: String?,
 
     @SerialName("back_transparent")
-    val backTransparent: String,
+    val backTransparent: String?,
 
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_shiny")
-    val frontShiny: String,
+    val frontShiny: String?,
 
     @SerialName("front_shiny_transparent")
-    val frontShinyTransparent: String,
+    val frontShinyTransparent: String?,
 
     @SerialName("front_transparent")
-    val frontTransparent: String
+    val frontTransparent: String?
 )
 
 @Serializable
 data class Gold (
     @SerialName("back_default")
-    val backDefault: String,
+    val backDefault: String?,
 
     @SerialName("back_shiny")
-    val backShiny: String,
+    val backShiny: String?,
 
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_shiny")
-    val frontShiny: String,
+    val frontShiny: String?,
 
     @SerialName("front_transparent")
     val frontTransparent: String? = null
@@ -261,22 +261,22 @@ data class GenerationIii (
 @Serializable
 data class OfficialArtwork (
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_shiny")
-    val frontShiny: String
+    val frontShiny: String?
 )
 
 @Serializable
 data class Home (
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_female")
     val frontFemale: JsonElement? = null,
 
     @SerialName("front_shiny")
-    val frontShiny: String,
+    val frontShiny: String?,
 
     @SerialName("front_shiny_female")
     val frontShinyFemale: JsonElement? = null
@@ -293,7 +293,7 @@ data class GenerationVii (
 @Serializable
 data class DreamWorld (
     @SerialName("front_default")
-    val frontDefault: String,
+    val frontDefault: String?,
 
     @SerialName("front_female")
     val frontFemale: JsonElement? = null

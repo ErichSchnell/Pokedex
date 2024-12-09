@@ -13,7 +13,7 @@ fun PokemonDetailDto.toPokemonDetailModel() : PokemonDetailModel {
     val pokemon = PokemonModel(
         id = id,
         name = name,
-        urlImg = sprites.other?.officialArtwork?.frontDefault ?: this.sprites.frontDefault,
+        urlImg = sprites.other?.officialArtwork?.frontDefault ?: this.sprites.frontDefault.orEmpty(),
         types = types.map { it.toTypeString() },
         isFav = false
     )
