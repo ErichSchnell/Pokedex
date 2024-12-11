@@ -1,5 +1,6 @@
 package com.jereschneider.pokedex.ui.screens.details
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -25,7 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.capitalize
@@ -41,7 +46,10 @@ import com.jereschneider.pokedex.domain.models.About
 import com.jereschneider.pokedex.domain.models.PokemonDetailModel
 import com.jereschneider.pokedex.domain.models.PokemonModel
 import com.jereschneider.pokedex.ui.components.Chip
+import com.jereschneider.pokedex.ui.components.StateColor
 import com.jereschneider.pokedex.ui.components.Toolbar
+import com.jereschneider.pokedex.ui.components.createHexagonPath
+import com.jereschneider.pokedex.ui.components.drawStatsPath
 import com.jereschneider.pokedex.ui.components.getBackgroundColor
 
 @Composable
@@ -185,6 +193,7 @@ private fun Details(detailAbout: About) {
         item { DetailItem(title = "Height", value = detailAbout.height) }
         item { DetailItem(title = "Weight", value = detailAbout.weight) }
         item { DetailItem(title = "Abilities", value = detailAbout.abilities) }
+        item { StatsItem(value = detailAbout.stats) }
         item { Spacer(Modifier.size(40.dp)) }
     }
 }
@@ -205,6 +214,66 @@ private fun DetailItem(title: String, value: String) {
     }
 }
 
+@Composable
+private fun StatsItem(value: List<Long>) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(top = 12.dp)
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.TopStart),
+            text = "Stats",
+            color = Color.Gray
+        )
+        if (value.isNotEmpty()){
+            Hexagono(modifier = Modifier.align(Alignment.BottomCenter), value = value)
+        }
+    }
+}
+
+@Composable
+fun Hexagono(
+    modifier: Modifier = Modifier,
+    value: List<Long>
+) {
+    val colorsStats = listOf(
+        StateColor.SPECIAL_ATTACK.color,
+        StateColor.SPEED.color,
+        StateColor.SPECIAL_DEFENSE.color,
+        StateColor.DEFENSE.color,
+        StateColor.HP.color,
+        StateColor.ATTACK.color,
+    )
+    Canvas(
+        modifier = modifier.fillMaxWidth().height(400.dp)
+    ) {
+        val centerOffset = Offset(size.width / 2, size.height / 2)
+        val radiusMax = 400f
+
+        val hexagonPath = createHexagonPath(centerOffset, radiusMax)
+        val statsPath = drawStatsPath(
+            centerOffset,
+            hp = value[0],
+            attack = value[1],
+            defense = value[2],
+            specialAttack = value[3],
+            specialDefense = value[4],
+            speed = value[5],
+        )
+        drawPath(
+            path = hexagonPath,
+            color = Color.Gray,
+            style = Stroke(width = 2.dp.toPx())
+        )
+        drawPath(
+            path = statsPath,
+            brush = Brush.sweepGradient(colors = colorsStats)
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun DetailContentPreview() {
@@ -219,7 +288,8 @@ private fun DetailContentPreview() {
         species = "Seed",
         height = "2`3.6\" (0.70 cm)",
         weight = "11.2 lbs (6.9 kg)",
-        abilities = "Overgrow, Chlorophyl"
+        abilities = "Overgrow, Chlorophyl",
+        stats = emptyList()
     )
     val detailPokemon = PokemonDetailModel(pokemonModel, about)
     DetailContent(

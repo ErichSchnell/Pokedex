@@ -143,7 +143,7 @@ private fun ItemPokedexPreview() {
     )
     val pokeDetail = PokemonDetailModel(
         pokemonModel,
-        About("", "", "", "")
+        About("", "", "", "", emptyList())
     )
     ItemPokedex(pokemonDetailModel = pokeDetail) {}
 }

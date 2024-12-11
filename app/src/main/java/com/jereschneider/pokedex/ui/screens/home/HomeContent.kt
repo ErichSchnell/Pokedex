@@ -63,15 +63,15 @@ private fun HomeContentPreview() {
     val pokemons = listOf(
         PokemonDetailModel(
             PokemonModel(0, "Bulbasaur", "", listOf("grass", "poison"), false),
-            About("", "", "", ""),
+            About("", "", "", "", emptyList()),
         ),
         PokemonDetailModel(
             PokemonModel(1, "Ivysaur", "", listOf("grass", "poison"), false),
-            About("", "", "", "")
+            About("", "", "", "", emptyList())
         ),
         PokemonDetailModel(
             PokemonModel(2, "Ventasaur", "", listOf("grass", "poison"), false),
-            About("", "", "", ""),
+            About("", "", "", "", emptyList()),
         )
     )
     HomeContent(
