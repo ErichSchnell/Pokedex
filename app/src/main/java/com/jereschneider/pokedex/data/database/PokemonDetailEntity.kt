@@ -14,5 +14,6 @@ data class PokemonDetailEntity(
     val height: String,
     val weight: String,
     val abilities: String,
+    val stats: List<String>,
     val isFav: Boolean
 )

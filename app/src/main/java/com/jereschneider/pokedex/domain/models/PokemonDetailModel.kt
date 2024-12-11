@@ -14,5 +14,6 @@ data class About(
     val species: String,
     val height: String,
     val weight: String,
-    val abilities: String
+    val abilities: String,
+    val stats: List<Long>
 ) : Parcelable

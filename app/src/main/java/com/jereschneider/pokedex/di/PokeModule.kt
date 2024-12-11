@@ -3,6 +3,7 @@ package com.jereschneider.pokedex.di
 import android.app.Application
 import androidx.room.Room
 import com.jereschneider.pokedex.data.database.FavouritePokemonDB
+import com.jereschneider.pokedex.data.database.Migration1to2
 import com.jereschneider.pokedex.data.datasources.FavouritePokemonDataSource
 import com.jereschneider.pokedex.data.datasources.PokemonDetailRemoteDataSource
 import com.jereschneider.pokedex.data.datasources.PokemonListDataSource
@@ -38,7 +39,9 @@ object PokeModule {
             app,
             FavouritePokemonDB::class.java,
             FavouritePokemonDB.DB_NAME
-        ).build()
+        )
+            .addMigrations(Migration1to2())
+            .build()
     }
 
     @Provides

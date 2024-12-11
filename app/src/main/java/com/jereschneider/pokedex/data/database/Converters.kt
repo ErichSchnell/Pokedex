@@ -9,11 +9,11 @@ class Converters {
 
     @TypeConverter
     fun fromString(value: String): List<String> {
-        return json.decodeFromString(value)
+        return if (value.isEmpty()) emptyList() else value.split(",")
     }
 
     @TypeConverter
     fun fromList(list: List<String>): String {
-        return json.encodeToString(list)
+        return list.joinToString(separator = ",")
     }
 }

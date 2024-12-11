@@ -21,7 +21,8 @@ fun PokemonDetailDto.toPokemonDetailModel() : PokemonDetailModel {
         species = species.name,
         height = height.toString(),
         weight = weight.toString(),
-        abilities = abilities.toString()
+        abilities = abilities.map { it.ability.name }.toString(),
+        stats = stats.map { it.baseStat }
     )
     return PokemonDetailModel(
         pokemon = pokemon,
@@ -37,6 +38,7 @@ fun PokemonDetailModel.toEntity() = PokemonDetailEntity(
     height =  this.about.height,
     weight =  this.about.weight,
     abilities =  this.about.abilities,
+    stats = this.about.stats.map { it.toString() },
     types = this.pokemon.types,
     isFav = this.pokemon.isFav
 )
@@ -53,7 +55,8 @@ fun PokemonDetailEntity.toModel() = PokemonDetailModel(
         species =  this.species,
         height =  this.height,
         weight =  this.weight,
-        abilities =  this.abilities
+        abilities =  this.abilities,
+        stats = this.stats.map { it.toLong() }
     )
 )
 
